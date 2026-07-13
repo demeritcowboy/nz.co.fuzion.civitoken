@@ -80,7 +80,7 @@ function relationships_civitoken_get($cid, &$value) {
     if (!empty($relationship['start_date']) && strtotime($relationship['start_date']) > strtotime('now')) {
       continue;
     }
-    if (!empty($relationship['end_date']) && strtotime($relationship['start_date']) < strtotime('now')) {
+    if (!empty($relationship['end_date']) && strtotime($relationship['end_date']) < strtotime('now')) {
       continue;
     }
     if (!empty($value['relationships.id_' . $relationship['relationship_type_id'] . '_a_b'])) {
@@ -111,7 +111,7 @@ function relationships_civitoken_get($cid, &$value) {
     if (!empty($relationship['start_date']) && strtotime($relationship['start_date']) > strtotime('now')) {
       continue;
     }
-    if (!empty($relationship['end_date']) && strtotime($relationship['start_date']) < strtotime('now')) {
+    if (!empty($relationship['end_date']) && strtotime($relationship['end_date']) < strtotime('now')) {
       continue;
     }
     if (!empty($value['relationships.id_' . $relationship['relationship_type_id'] . '_b_a'])) {
