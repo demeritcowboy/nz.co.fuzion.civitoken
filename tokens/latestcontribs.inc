@@ -6,6 +6,8 @@ function latestcontribs_civitoken_declare($token) {
     $token . '.total_amount' => 'Total amount of latest completed contribution',
     $token . '.receive_date' => 'Receive date of latest completed contribution',
     $token . '.financial_type' => 'Financial type of latest completed contribution',
+    $token . '.id' => 'ID of latest completed contribution',
+    $token . '.source' => 'Source of latest completed contribution',
   ];
 }
 
@@ -54,6 +56,8 @@ function latestcontribs_civitoken_get(int $cid, &$value): array {
 function _latestcontribs_get_last_completed_contribution($cid, $value) {
   $sql = 'SELECT civicrm_contribution.receive_date,
     civicrm_contribution.total_amount,
+    civicrm_contribution.id,
+    civicrm_contribution.source,
     civicrm_financial_type.name as financial_type
     FROM civicrm_contribution
     LEFT JOIN civicrm_financial_type ON civicrm_contribution.financial_type_id = civicrm_financial_type.id
@@ -67,12 +71,16 @@ function _latestcontribs_get_last_completed_contribution($cid, $value) {
   $params[1] = [$cid, 'Integer'];
   $value['latestcontribs.total_amount'] = '';
   $value['latestcontribs.receive_date'] = '';
+  $value['latestcontribs.id'] = '';
+  $value['latestcontribs.source'] = '';
   $value['latestcontribs.financial_type'] = '';
   $dao = CRM_Core_DAO::executeQuery($sql, $params);
   if ($dao->fetch()) {
     $value['latestcontribs.total_amount'] = \CRM_Utils_Money::format($dao->total_amount);
     $receive_date = new DateTime($dao->receive_date);
     $value['latestcontribs.receive_date'] = \CRM_Utils_Date::customFormat($receive_date->format('Y-m-d'));
+    $value['latestcontribs.id'] = $dao->id;
+    $value['latestcontribs.source'] = $dao->source;
     $value['latestcontribs.financial_type'] = $dao->financial_type;
   }
   return $value;
